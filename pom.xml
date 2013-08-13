@@ -3,7 +3,7 @@
 	http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sagtradings</groupId>
-	<artifactId>sagtradings</artifactId>
+	<artifactId>MarketDataPersistor</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
 	<name>ctpintegrator</name>
@@ -13,29 +13,29 @@
 		<jdk.version>1.6</jdk.version>
 		<spring.version>3.2.2.RELEASE</spring.version>
 	</properties>
-	
-	
+
+
 
 	<repositories>
-	    <!--other repositories if any-->
-	    <repository>
-	        <id>project.local</id>
-	        <name>project</name>
-	        <url>file:${project.basedir}/repo</url>
-	    </repository>
+		<!--other repositories if any -->
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
 	</repositories>
 
-	
+
 
 	<dependencies>
 
 
 
-	<dependency>
-	    <groupId>com.example</groupId>
-	    <artifactId>mylib</artifactId>
-	    <version>1.0</version>
-	</dependency>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>mylib</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 
 
@@ -143,7 +143,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -155,6 +155,18 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>marketdatapersistor.Test</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>

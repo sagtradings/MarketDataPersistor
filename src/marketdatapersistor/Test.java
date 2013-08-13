@@ -15,6 +15,30 @@ public class Test {
 	static{
 		System.loadLibrary("CTPDLL");
 	}
+	
+	private static class ICThread implements Runnable{
+		
+		@Override
+		public void run() {
+	        MarketDataNativeInterface nativeInterface = new MarketDataNativeInterface();
+	         nativeInterface.subscribeListener(new ICMarketDataListener());
+	        String[] quote2 = {"IF1309"};
+	        barDataManger.initializeEntry("IF1309", 10000);
+	        nativeInterface.sendLoginMessage("1013", "123321", "00000008", PropertiesManager.getInstance().getProperty("marketdataurl"));
+	        nativeInterface.sendQuoteRequest(quote2);
+	        while(true){
+	        	try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+			
+		}
+		
+	}
+	
 	private BarDataDAO barDao = new BarDataDAO();
 	private static BarDataManager barDataManger = new BarDataManager();
 	private static class ICMarketDataListener extends DefaultCTPListener{
@@ -44,10 +68,6 @@ public class Test {
 	}
 	
 	public static void main(String args[]){
-        MarketDataNativeInterface nativeInterface = new MarketDataNativeInterface();
-         nativeInterface.subscribeListener(new ICMarketDataListener());
-        String[] quote2 = {"IF1309"};
-        nativeInterface.sendLoginMessage("1013", "123321", "00000008", PropertiesManager.getInstance().getProperty("marketdataurl"));
-        nativeInterface.sendQuoteRequest(quote2);
+		new Thread(new ICThread()).start();
 	}
 }
