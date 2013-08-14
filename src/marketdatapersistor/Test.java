@@ -1,5 +1,9 @@
 package marketdatapersistor;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import listeners.DefaultCTPListener;
 import nativeinterfaces.MarketDataNativeInterface;
 import properties.PropertiesManager;
@@ -42,7 +46,7 @@ public class Test {
 	private BarDataDAO barDao = new BarDataDAO();
 	private static BarDataManager barDataManger = new BarDataManager();
 	private static class ICMarketDataListener extends DefaultCTPListener{
-
+		private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH:mm:ss");
 		@Override
 		public void onRspUserLogin(LoginResponse loginResponse) {
 			System.out.println("logged in successfully");
@@ -50,14 +54,21 @@ public class Test {
 
 		@Override
 		public void onRtnDepthMarketData(MarketDataResponse response) {
+			
+
+			
 			try {
-				
+				Date updateTime = formatter.parse(response.getTradingDay() + response.getUpdateTime());
+				response.setMillisecConversionTime(updateTime.getTime());
 				BarData compiledData = barDataManger.sendMarketData(response);
 				if(compiledData != null){
 					BarDataDAO bao = new BarDataDAO();
 					bao.addBarData(compiledData);
 				}
 			} catch (EntryNotInitializedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
